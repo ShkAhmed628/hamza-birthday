@@ -1,0 +1,1249 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <title>A Birthday Surprise 💖</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --p: #ff2d95;
+        --p2: #ff6ec7;
+        --bg: #050205;
+        --glass: rgba(255, 255, 255, 0.05);
+      }
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        -webkit-tap-highlight-color: transparent;
+      }
+      html,
+      body {
+        height: 100%;
+        background: var(--bg);
+        color: #fff;
+        font-family: Poppins, system-ui, sans-serif;
+        overflow: hidden;
+      }
+      #app {
+        position: fixed;
+        inset: 0;
+        padding: env(safe-area-inset-top, 0px) 0
+          env(safe-area-inset-bottom, 0px);
+        background: radial-gradient(circle at 50% 0, #2a0719 0, #050205 60%);
+      }
+      #fx {
+        position: fixed;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 50;
+      }
+      .screen {
+        position: absolute;
+        inset: 0;
+        display: none;
+        flex-direction: column;
+        align-items: center;
+        justify-content: safe center;
+        padding: 56px 16px 44px;
+        overflow-y: auto;
+        text-align: center;
+      }
+      .screen.on {
+        display: flex;
+        animation: in 0.6s ease;
+      }
+      @keyframes in {
+        from {
+          opacity: 0;
+          transform: translateY(18px) scale(0.97);
+        }
+      }
+      .card {
+        width: min(92vw, 430px);
+        padding: 22px 18px;
+        border-radius: 22px;
+        background: var(--glass);
+        backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 45, 149, 0.5);
+        box-shadow:
+          0 0 24px rgba(255, 45, 149, 0.25),
+          inset 0 0 18px rgba(255, 45, 149, 0.08);
+      }
+      h1,
+      h2 {
+        font-family: "Great Vibes", cursive;
+        font-weight: 400;
+        color: var(--p2);
+        text-shadow:
+          0 0 12px var(--p),
+          0 0 28px var(--p);
+        line-height: 1.1;
+      }
+      h1 {
+        font-size: clamp(34px, 10vw, 52px);
+      }
+      h2 {
+        font-size: clamp(30px, 9vw, 44px);
+        margin-bottom: 10px;
+      }
+      .neon {
+        font-size: clamp(24px, 7vw, 32px);
+        font-weight: 700;
+        letter-spacing: 3px;
+        color: transparent;
+        -webkit-text-stroke: 1.5px var(--p);
+        text-shadow: 0 0 14px var(--p);
+        margin-bottom: 10px;
+      }
+      p.s {
+        font-size: 13px;
+        opacity: 0.85;
+        margin: 6px 0;
+      }
+      .btn {
+        font:
+          600 14px Poppins,
+          sans-serif;
+        color: #fff;
+        background: linear-gradient(135deg, var(--p), #c2186b);
+        border: 0;
+        border-radius: 30px;
+        padding: 11px 24px;
+        margin: 6px;
+        cursor: pointer;
+        box-shadow: 0 0 16px var(--p);
+        transition: 0.2s;
+      }
+      .btn:active {
+        transform: scale(0.94);
+      }
+      .btn.o {
+        background: transparent;
+        border: 1.5px solid var(--p);
+        box-shadow: 0 0 10px rgba(255, 45, 149, 0.5);
+      }
+      .btn[hidden] {
+        display: none;
+      }
+      .row {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        margin-top: 12px;
+      }
+      input {
+        width: 100%;
+        padding: 12px 14px;
+        border-radius: 12px;
+        border: 1px solid var(--p);
+        background: rgba(0, 0, 0, 0.5);
+        color: #fff;
+        font: 15px Poppins;
+        outline: 0;
+        margin: 10px 0;
+        box-shadow: 0 0 10px rgba(255, 45, 149, 0.3);
+      }
+      #pw {
+        -webkit-text-security: disc;
+        position: relative;
+        z-index: 70;
+        -webkit-user-select: text;
+        user-select: text;
+        pointer-events: auto;
+      }
+      .shake {
+        animation: sh 0.45s;
+      }
+      @keyframes sh {
+        20%,
+        60% {
+          transform: translateX(-10px);
+        }
+        40%,
+        80% {
+          transform: translateX(10px);
+        }
+      }
+      .err {
+        color: #ff5c8a;
+        min-height: 18px;
+        font-size: 13px;
+      }
+      #ctl {
+        position: fixed;
+        top: calc(10px + env(safe-area-inset-top, 0px));
+        right: 10px;
+        z-index: 60;
+        display: flex;
+        gap: 8px;
+      }
+      #ctl button {
+        width: 38px;
+        height: 38px;
+        border-radius: 50%;
+        border: 1.5px solid var(--p);
+        background: rgba(0, 0, 0, 0.6);
+        color: #fff;
+        font-size: 15px;
+        cursor: pointer;
+        box-shadow: 0 0 10px var(--p);
+      }
+      #dots {
+        position: fixed;
+        bottom: calc(12px + env(safe-area-inset-bottom, 0px));
+        left: 0;
+        right: 0;
+        display: flex;
+        justify-content: center;
+        gap: 7px;
+        z-index: 60;
+      }
+      #dots i {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: #555;
+        transition: 0.3s;
+      }
+      #dots i.d {
+        background: var(--p2);
+      }
+      #dots i.c {
+        background: var(--p);
+        box-shadow: 0 0 10px var(--p);
+        transform: scale(1.5);
+      }
+      /* loader */
+      .ring {
+        position: relative;
+        width: 110px;
+        height: 110px;
+        margin: 14px auto;
+      }
+      .ring svg {
+        transform: rotate(-90deg);
+      }
+      .ring b {
+        position: absolute;
+        inset: 0;
+        display: grid;
+        place-items: center;
+        font-size: 20px;
+      }
+      /* balloons */
+      #arena {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 6px 18px;
+        margin: 8px 0;
+        min-height: 200px;
+      }
+      .bl {
+        width: 58px;
+        height: 74px;
+        border-radius: 50% 50% 48% 48%;
+        background:
+          radial-gradient(circle at 35% 30%, #fff8, transparent 30%), var(--c);
+        position: relative;
+        cursor: pointer;
+        animation: fl 3s ease-in-out infinite;
+        animation-delay: var(--d);
+        box-shadow: 0 0 14px var(--c);
+      }
+      .bl:after {
+        content: "";
+        position: absolute;
+        left: 50%;
+        top: 100%;
+        width: 1px;
+        height: 46px;
+        background: #ccc8;
+      }
+      @keyframes fl {
+        50% {
+          transform: translateY(-14px) rotate(3deg);
+        }
+      }
+      .bl.pop {
+        animation: pp 0.3s forwards;
+        pointer-events: none;
+      }
+      @keyframes pp {
+        to {
+          transform: scale(1.7);
+          opacity: 0;
+        }
+      }
+      #wishes {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+        width: min(92vw, 430px);
+        margin-top: 6px;
+      }
+      .w {
+        padding: 8px;
+        font-size: 12px;
+        border: 1px solid var(--p);
+        border-radius: 10px;
+        background: rgba(255, 45, 149, 0.1);
+        animation: in 0.4s;
+      }
+      /* letter */
+      .letter {
+        text-align: left;
+        font-size: 14px;
+        line-height: 1.7;
+        max-height: 48vh;
+        overflow: auto;
+      }
+      .letter p {
+        margin-bottom: 10px;
+      }
+      /* cake */
+      #cakeSvg {
+        width: min(70vw, 260px);
+        height: auto;
+        overflow: visible;
+      }
+      .half {
+        transition: transform 0.9s cubic-bezier(0.2, 0.8, 0.3, 1);
+      }
+      .cut .l {
+        transform: translate(-22px, 6px) rotate(-5deg);
+      }
+      .cut .r {
+        transform: translate(22px, 6px) rotate(5deg);
+      }
+      .fl {
+        animation: fk 0.3s infinite alternate;
+        transform-origin: center;
+        transform-box: fill-box;
+      }
+      @keyframes fk {
+        to {
+          transform: scale(1.15, 0.9);
+        }
+      }
+      .cut .fl {
+        display: none;
+      }
+      /* quiz */
+      .opt {
+        display: block;
+        width: 100%;
+        text-align: left;
+        margin: 8px 0;
+        padding: 11px 13px;
+        border-radius: 10px;
+        border: 1px solid rgba(255, 45, 149, 0.6);
+        background: rgba(0, 0, 0, 0.4);
+        color: #fff;
+        font: 13px Poppins;
+        cursor: pointer;
+      }
+      .opt.ok {
+        background: rgba(0, 200, 100, 0.25);
+        border-color: #2ecc71;
+        box-shadow: 0 0 12px #2ecc71;
+      }
+      .opt.no {
+        background: rgba(255, 0, 60, 0.25);
+        border-color: #ff3355;
+        box-shadow: 0 0 12px #ff3355;
+      }
+      .fb {
+        min-height: 22px;
+        font-size: 13px;
+        margin-top: 6px;
+      }
+      /* gallery */
+      #frame {
+        width: min(78vw, 300px);
+        aspect-ratio: 3/4;
+        border-radius: 18px;
+        border: 2px solid var(--p);
+        box-shadow:
+          0 0 26px var(--p),
+          inset 0 0 12px var(--p);
+        overflow: hidden;
+        background: #111;
+        touch-action: pan-y;
+      }
+      #frame img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition:
+          opacity 0.2s,
+          transform 0.3s;
+        display: block;
+        -webkit-user-drag: none;
+      }
+      #cap {
+        margin-top: 10px;
+        font-size: 14px;
+        min-height: 40px;
+      }
+      #cap small {
+        display: block;
+        opacity: 0.6;
+        font-size: 11px;
+      }
+      .arr {
+        width: 40px;
+        height: 40px;
+        padding: 0;
+        border-radius: 50%;
+      }
+      #fin {
+        animation: pulse 2s infinite;
+      }
+      @keyframes pulse {
+        50% {
+          text-shadow:
+            0 0 22px var(--p),
+            0 0 60px var(--p);
+        }
+      }
+      /* desktop & mouse support */
+      @media (hover: hover) {
+        .btn:hover {
+          transform: translateY(-2px);
+          filter: brightness(1.15);
+        }
+        .opt:hover:not(.ok):not(.no) {
+          background: rgba(255, 45, 149, 0.2);
+        }
+        .bl:hover {
+          filter: brightness(1.2);
+        }
+        #ctl button:hover {
+          background: var(--p);
+        }
+        #frame {
+          cursor: grab;
+        }
+      }
+      @media (min-width: 768px) {
+        .card {
+          width: min(90vw, 580px);
+          padding: 30px 28px;
+        }
+        h1 {
+          font-size: 64px;
+        }
+        h2 {
+          font-size: 54px;
+        }
+        .neon {
+          font-size: 40px;
+        }
+        p.s {
+          font-size: 15px;
+        }
+        .btn {
+          font-size: 16px;
+          padding: 13px 30px;
+        }
+        .opt {
+          font-size: 16px;
+          padding: 14px 16px;
+        }
+        .err,
+        .fb {
+          font-size: 15px;
+        }
+        #arena {
+          gap: 10px 36px;
+          min-height: 260px;
+        }
+        .bl {
+          width: 76px;
+          height: 96px;
+        }
+        .bl:after {
+          height: 60px;
+        }
+        #wishes {
+          width: min(90vw, 720px);
+          grid-template-columns: repeat(3, 1fr);
+        }
+        .w {
+          font-size: 14px;
+          padding: 10px;
+        }
+        .letter {
+          font-size: 17px;
+          max-height: 52vh;
+          webkit-column-gap: thin;
+          webkit-display: inline-block;
+        }
+        #cakeSvg {
+          width: min(42vh, 340px);
+        }
+        #frame {
+          width: min(380px, calc(52vh * 0.75));
+        }
+        #cap {
+          font-size: 17px;
+        }
+        #fmsg {
+          font-size: 18px !important;
+        }
+        .ring {
+          width: 130px;
+          height: 130px;
+        }
+        .ring b {
+          font-size: 24px;
+        }
+        #dots i {
+          width: 9px;
+          height: 9px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <div id="ctl">
+        <button id="pp" title="Play / pause music">♪</button
+        ><button id="mu" title="Mute / unmute">🔊</button>
+      </div>
+
+      <!-- 0 password -->
+      <section class="screen on" id="s0">
+        <div class="card" id="pwc">
+          <div class="neon">ENTER PASSWORD</div>
+          <p class="s">
+            Enter the secret password to unlock something special ❤️
+          </p>
+          <input
+            id="pw"
+            type="text"
+            name="surprise-key"
+            placeholder="Enter Password"
+            autocomplete="off"
+            autocapitalize="off"
+            autocorrect="off"
+            spellcheck="false"
+          />
+          <div class="err" id="err"></div>
+          <button class="btn" id="unlock">Unlock 🔓</button>
+          <p class="s" style="margin-top: 12px">Shhh… it’s a surprise 🤫</p>
+        </div>
+      </section>
+
+      <!-- 1 loading -->
+      <section class="screen" id="s1">
+        <div class="card">
+          <h2>Something Special</h2>
+          <p class="s">Is Loading…</p>
+          <div class="ring">
+            <svg width="110" height="110">
+              <circle
+                cx="55"
+                cy="55"
+                r="46"
+                fill="none"
+                stroke="#333"
+                stroke-width="6"
+              />
+              <circle
+                id="arc"
+                cx="55"
+                cy="55"
+                r="46"
+                fill="none"
+                stroke="#ff2d95"
+                stroke-width="6"
+                stroke-linecap="round"
+                stroke-dasharray="289"
+                stroke-dashoffset="289"
+                style="filter: drop-shadow(0 0 6px #ff2d95)"
+              /></svg
+            ><b id="pct">0%</b>
+          </div>
+          <p class="s">Please wait… 💗</p>
+        </div>
+      </section>
+
+      <!-- 2 balloons -->
+      <section class="screen" id="s2">
+        <h1>Pop the Balloons and Read My Wishes</h1>
+        <p class="s">Tap each balloon to pop it and reveal a wish! 🎈</p>
+        <div id="arena"></div>
+        <div id="wishes"></div>
+        <div class="row">
+          <button class="btn" data-d="1">Read My Wishes 💌</button>
+        </div>
+      </section>
+
+      <!-- 3 letter -->
+      <section class="screen" id="s3">
+        <h1 style="margin-bottom: 14px">Wishes From The Heart 💗</h1>
+        <div class="card"><div class="letter" id="letter"></div></div>
+        <div class="row">
+          <button class="btn o" data-d="-1">Back</button
+          ><button class="btn" data-d="1">Continue</button>
+        </div>
+      </section>
+
+      <!-- 4 cake -->
+      <section class="screen" id="s4">
+        <h2 id="cakeH">Candles Blown Out! 🕯️✨</h2>
+        <p class="s" id="cakeP">Now tap to cut your birthday cake!</p>
+        <svg id="cakeSvg" viewBox="0 0 200 190">
+          <defs>
+            <clipPath id="cl">
+              <rect x="0" y="0" width="100" height="190" />
+            </clipPath>
+            <clipPath id="cr">
+              <rect x="100" y="0" width="100" height="190" />
+            </clipPath>
+            <g id="cake">
+              <ellipse
+                cx="100"
+                cy="182"
+                rx="95"
+                ry="8"
+                fill="#ff2d95"
+                opacity=".5"
+              />
+              <rect
+                x="20"
+                y="120"
+                width="160"
+                height="58"
+                rx="6"
+                fill="#c8102e"
+              />
+              <rect x="20" y="114" width="160" height="12" rx="6" fill="#fff" />
+              <rect
+                x="50"
+                y="78"
+                width="100"
+                height="42"
+                rx="6"
+                fill="#e11d48"
+              />
+              <rect x="50" y="72" width="100" height="12" rx="6" fill="#fff" />
+              <g fill="#fff">
+                <circle cx="30" cy="128" r="4" />
+                <circle cx="60" cy="130" r="4" />
+                <circle cx="90" cy="128" r="4" />
+                <circle cx="120" cy="130" r="4" />
+                <circle cx="150" cy="128" r="4" />
+                <circle cx="170" cy="130" r="4" />
+              </g>
+              <text
+                x="100"
+                y="160"
+                text-anchor="middle"
+                font-size="14"
+                font-weight="700"
+                fill="#fff"
+                font-family="Poppins"
+              >
+                Dear hamza Khokar
+              </text>
+              <rect x="84" y="48" width="6" height="26" fill="#ffb3d9" />
+              <rect x="97" y="48" width="6" height="26" fill="#fff" />
+              <rect x="110" y="48" width="6" height="26" fill="#ffb3d9" />
+            </g>
+          </defs>
+          <g id="cg">
+            <use class="half l" href="#cake" clip-path="url(#cl)" />
+            <use class="half r" href="#cake" clip-path="url(#cr)" />
+            <g class="fl">
+              <ellipse cx="87" cy="42" rx="4" ry="7" fill="#ffb300" />
+            </g>
+            <g class="fl">
+              <ellipse cx="100" cy="42" rx="4" ry="7" fill="#ffb300" />
+            </g>
+            <g class="fl">
+              <ellipse cx="113" cy="42" rx="4" ry="7" fill="#ffb300" />
+            </g>
+          </g>
+        </svg>
+        <div class="row">
+          <button class="btn" id="cutBtn">🔪 Cut the Cake</button>
+        </div>
+        <div class="row">
+          <button class="btn o" data-d="-1">Back</button
+          ><button class="btn" id="cakeNext" data-d="1" hidden>
+            Continue 👉
+          </button>
+        </div>
+      </section>
+
+      <!-- 5 quiz -->
+      <section class="screen" id="s5">
+        <h2>Birthday Boy, One Little Challenge! 🎮🎂</h2>
+        <p class="s" id="qprog"></p>
+        <div class="card" id="qbox"></div>
+        <div class="row">
+          <button class="btn o" data-d="-1">Back</button
+          ><button class="btn" id="qnext" hidden>Next Question 👉</button>
+        </div>
+      </section>
+
+      <!-- 6 memories -->
+      <section class="screen" id="s6">
+        <h1 style="margin-bottom: 4px">Our Memories 💗</h1>
+        <p class="s">Swipe, drag or use the ← → keys to see the photos 👈👉</p>
+        <div id="frame"><img id="gimg" alt="memory" /></div>
+        <div id="cap"></div>
+        <div class="row" style="margin-top: 0; align-items: center">
+          <button class="btn o arr" id="prev">‹</button
+          ><span id="cnt" style="margin: 0 10px"></span
+          ><button class="btn o arr" id="next">›</button>
+        </div>
+        <div class="row">
+          <button class="btn o" data-d="-1">Back</button
+          ><button class="btn" data-d="1">Final Note 💝</button>
+        </div>
+      </section>
+
+      <!-- 7 final -->
+      <section class="screen" id="s7">
+        <div class="card">
+          <h1 id="fin"></h1>
+          <p
+            id="fmsg"
+            style="margin: 14px 0; line-height: 1.7; font-size: 15px"
+          ></p>
+          <button class="btn o" id="replay">🔄 Replay</button>
+        </div>
+      </section>
+
+      <div id="dots"></div>
+      <canvas id="fx"></canvas>
+    </div>
+
+    <script>
+      /* ============ CONFIG — edit everything here ============ */
+      const C = {
+        name: "hamza Khokar",
+        from: "Your Friend",
+        date: "5 November 2026",
+        password: "1234",
+        music: "", // optional: URL or file path to an mp3 (leave empty to use the built-in birthday tune)
+        wishes: [
+          "May all your dreams come true ✨",
+          "Stay happy and keep smiling always! 😊",
+          "Wishing you endless success and joy! 🚀",
+          "You’re the best, dear {name}! 🥰",
+          "May this year be your brightest yet 🌟",
+          "Sending you a million hugs today 🤗",
+        ],
+        letter: [
+          "Happy Birthday, {name}! 🎉",
+          "Today is all about you — the person who makes every day brighter just by being in it.",
+          "I wanted to make something special, so this little surprise is my way of saying thank you for every laugh, every memory and every moment we’ve shared.",
+          "May your year be full of love, success and so many reasons to smile.",
+          "With all my love,",
+          "{from} 💖",
+        ],
+        quiz: [
+          {
+            q: "What do people look for first on their birthday? 🎂",
+            a: [
+              "Only gifts 🎁",
+              "The biggest slice of cake 🍰",
+              "A selfie in good light 📸",
+              "All of this and more! 😄",
+            ],
+            c: 3,
+          },
+          {
+            q: "When someone says “5 minutes”, what do they really mean? ⏰",
+            a: [
+              "Exactly 5 minutes ⏱️",
+              "5 minutes… then a full hour 😅",
+              "10 minutes 😌",
+              "They never come 🏃",
+            ],
+            c: 1,
+          },
+          {
+            q: "What is the best way to celebrate a birthday? 🥳",
+            a: [
+              "Studying 📚",
+              "Sleeping 😴",
+              "Party hard and enjoy! 🎉",
+              "Nothing, so boring 😐",
+            ],
+            c: 2,
+          },
+          {
+            q: "Who is the star of today? ⭐",
+            a: [
+              "The cake 🎂",
+              "The balloons 🎈",
+              "The birthday person! 👑",
+              "The music 🎵",
+            ],
+            c: 2,
+          },
+        ],
+        right: "Correct! You know me so well 💖",
+        wrong: "Oops! Nice try, {name} 😄",
+        photos: [
+          // src: image URL or path ("" = placeholder)
+          { src: "a.png", cap: "Where it all began", },
+          { src: "c.png", cap: "Road trip!" },
+          { src: "b.png", cap: "Sweet moments" },
+         
+        ],
+        final:
+          "May Allah bless you with happiness, success, health and endless beautiful memories. You deserve the whole world today and always. — {from} 💖",
+      };
+      /* ======================================================== */
+      const $ = (id) => document.getElementById(id),
+        T = (s) => s.replace(/{name}/g, C.name).replace(/{from}/g, C.from);
+      let cur = 0,
+        fwT;
+      /* ---------- fx canvas ---------- */
+      const cv = $("fx"),
+        cx = cv.getContext("2d");
+      let W,
+        H,
+        P = [],
+        A = [];
+      function rs() {
+        const d = devicePixelRatio || 1;
+        W = innerWidth;
+        H = innerHeight;
+        cv.width = W * d;
+        cv.height = H * d;
+        cx.setTransform(d, 0, 0, d, 0, 0);
+      }
+      addEventListener("resize", rs);
+      rs();
+      for (let i = 0; i < 30; i++)
+        A.push({
+          x: Math.random() * W,
+          y: Math.random() * H,
+          s: 3 + Math.random() * 9,
+          v: 0.2 + Math.random() * 0.6,
+          h: Math.random() < 0.45,
+        });
+      const COL = [
+        "#ff2d95",
+        "#ff6ec7",
+        "#ffd54f",
+        "#7cf",
+        "#b388ff",
+        "#fff",
+        "#6f6",
+      ];
+      function burst(x, y, n = 45) {
+        for (let i = 0; i < n; i++) {
+          const a = Math.random() * 6.28,
+            s = 1.5 + Math.random() * 5;
+          P.push({
+            x,
+            y,
+            vx: Math.cos(a) * s,
+            vy: Math.sin(a) * s,
+            g: 0.07,
+            l: 55 + Math.random() * 40,
+            m: 95,
+            c: COL[i % 7],
+            r: 2,
+          });
+        }
+      }
+      function confetti(n = 130) {
+        for (let i = 0; i < n; i++)
+          P.push({
+            x: Math.random() * W,
+            y: -10 - Math.random() * H * 0.3,
+            vx: Math.random() * 2 - 1,
+            vy: 2 + Math.random() * 3,
+            g: 0.01,
+            l: 170,
+            m: 170,
+            c: COL[i % 7],
+            r: 4,
+            q: 1,
+            a: Math.random() * 6,
+          });
+      }
+      (function loop() {
+        cx.clearRect(0, 0, W, H);
+        cx.globalAlpha = 0.3;
+        cx.fillStyle = "#ff2d95";
+        for (const a of A) {
+          a.y -= a.v;
+          if (a.y < -12) {
+            a.y = H + 10;
+            a.x = Math.random() * W;
+          }
+          a.h
+            ? ((cx.font = a.s * 1.6 + "px sans-serif"),
+              cx.fillText("♥", a.x, a.y))
+            : (cx.beginPath(), cx.arc(a.x, a.y, a.s / 5, 0, 6.28), cx.fill());
+        }
+        P = P.filter((p) => p.l > 0);
+        for (const p of P) {
+          p.vy += p.g;
+          p.x += p.vx;
+          p.y += p.vy;
+          p.l--;
+          cx.globalAlpha = Math.min(1, (p.l / p.m) * 1.6);
+          cx.fillStyle = p.c;
+          if (p.q) {
+            p.a += 0.15;
+            cx.save();
+            cx.translate(p.x, p.y);
+            cx.rotate(p.a);
+            cx.fillRect(-p.r, -p.r / 2, p.r * 2, p.r);
+            cx.restore();
+          } else {
+            cx.beginPath();
+            cx.arc(p.x, p.y, p.r, 0, 6.28);
+            cx.fill();
+          }
+        }
+        requestAnimationFrame(loop);
+      })();
+      /* ---------- music ---------- */
+      const M = [
+        [262, 0.75],
+        [262, 0.25],
+        [294, 1],
+        [262, 1],
+        [349, 1],
+        [330, 2],
+        [262, 0.75],
+        [262, 0.25],
+        [294, 1],
+        [262, 1],
+        [392, 1],
+        [349, 2],
+        [262, 0.75],
+        [262, 0.25],
+        [523, 1],
+        [440, 1],
+        [349, 1],
+        [330, 1],
+        [294, 2],
+        [466, 0.75],
+        [466, 0.25],
+        [440, 1],
+        [349, 1],
+        [392, 1],
+        [349, 2],
+        [0, 2],
+      ];
+      let ac,
+        mg,
+        au,
+        on = false,
+        muted = false,
+        idx = 0,
+        tm;
+      function note(f, d) {
+        if (!f) return;
+        const t = ac.currentTime,
+          o = ac.createOscillator(),
+          g = ac.createGain();
+        o.type = "triangle";
+        o.frequency.value = f;
+        g.gain.setValueAtTime(0.0001, t);
+        g.gain.exponentialRampToValueAtTime(0.18, t + 0.03);
+        g.gain.exponentialRampToValueAtTime(0.0001, t + d);
+        o.connect(g);
+        g.connect(mg);
+        o.start(t);
+        o.stop(t + d + 0.05);
+      }
+      function seq() {
+        clearTimeout(tm);
+        if (!on || C.music) return;
+        const [f, b] = M[idx % M.length];
+        note(f, b * 0.45);
+        idx++;
+        tm = setTimeout(seq, b * 450);
+      }
+      function music(v) {
+        on = v;
+        if (C.music) {
+          au = au || Object.assign(new Audio(C.music), { loop: true });
+          au.muted = muted;
+          v ? au.play().catch(() => {}) : au.pause();
+        } else if (v) {
+          ac = ac || new (window.AudioContext || window.webkitAudioContext)();
+          if (!mg) {
+            mg = ac.createGain();
+            mg.connect(ac.destination);
+          }
+          mg.gain.value = muted ? 0 : 1;
+          ac.resume();
+          seq();
+        } else clearTimeout(tm);
+        $("pp").textContent = on ? "⏸" : "♪";
+      }
+      $("pp").onclick = () => music(!on);
+      $("mu").onclick = () => {
+        muted = !muted;
+        if (mg) mg.gain.value = muted ? 0 : 1;
+        if (au) au.muted = muted;
+        $("mu").textContent = muted ? "🔇" : "🔊";
+      };
+      /* ---------- navigation ---------- */
+      for (let i = 0; i < 8; i++)
+        $("dots").appendChild(document.createElement("i"));
+      function go(n) {
+        cur = n;
+        document
+          .querySelectorAll(".screen")
+          .forEach((s, i) => s.classList.toggle("on", i === n));
+        [...$("dots").children].forEach(
+          (d, i) => (d.className = i < n ? "d" : i === n ? "c" : ""),
+        );
+        clearInterval(fwT);
+        if (n === 1) load();
+        if (n === 5) renderQ();
+        if (n === 6) showPhoto(0);
+        if (n === 7) final();
+      }
+      document
+        .querySelectorAll("[data-d]")
+        .forEach((b) =>
+          b.addEventListener("click", () => go(cur + +b.dataset.d)),
+        );
+      /* ---------- 0 password ---------- */
+      function tryPw() {
+        const v = $("pw").value.trim();
+        if (v === C.password) {
+          $("err").textContent = "";
+          music(true);
+          go(1);
+        } else {
+          $("err").textContent = "Wrong password, try again 💔";
+          $("pwc").classList.remove("shake");
+          void $("pwc").offsetWidth;
+          $("pwc").classList.add("shake");
+          $("pw").value = "";
+        }
+      }
+      $("unlock").onclick = tryPw;
+      $("pw").onkeydown = (e) => {
+        e.stopPropagation();
+        if (e.key === "Enter") tryPw();
+      };
+      if (!CSS.supports("-webkit-text-security", "disc"))
+        $("pw").type = "password";
+      $("pwc").addEventListener("click", () => $("pw").focus());
+      setTimeout(() => $("pw").focus(), 300);
+      /* ---------- 1 loading ---------- */
+      function load() {
+        let p = 0;
+        const t = setInterval(() => {
+          p += 2;
+          $("pct").textContent = p + "%";
+          $("arc").style.strokeDashoffset = 289 - (289 * p) / 100;
+          if (p >= 100) {
+            clearInterval(t);
+            setTimeout(() => cur === 1 && go(2), 500);
+          }
+        }, 55);
+      }
+      /* ---------- 2 balloons ---------- */
+      function balloons() {
+        $("arena").innerHTML = "";
+        $("wishes").innerHTML = "";
+        const cl = [
+          "#ff1744",
+          "#ff4fa3",
+          "#f8bbd0",
+          "#ff80ab",
+          "#ffd54f",
+          "#b388ff",
+        ];
+        C.wishes.slice(0, 6).forEach((w, i) => {
+          const b = document.createElement("div");
+          b.className = "bl";
+          b.style.cssText = `--c:${cl[i % 6]};--d:${i * 0.4}s`;
+          b.onclick = () => {
+            const r = b.getBoundingClientRect();
+            b.classList.add("pop");
+            burst(r.left + r.width / 2, r.top + r.height / 2, 30);
+            const d = document.createElement("div");
+            d.className = "w";
+            d.textContent = T(w);
+            $("wishes").appendChild(d);
+          };
+          $("arena").appendChild(b);
+        });
+      }
+      /* ---------- 3 letter ---------- */
+      function letter() {
+        $("letter").innerHTML = C.letter.map((l) => "<p></p>").join("");
+        [...$("letter").children].forEach(
+          (p, i) => (p.textContent = T(C.letter[i])),
+        );
+      }
+      /* ---------- 4 cake ---------- */
+      $("cutBtn").onclick = () => {
+        $("cakeSvg").classList.add("cut");
+        $("cutBtn").hidden = true;
+        $("cakeNext").hidden = false;
+        $("cakeH").textContent = "Yummy! Cake Cut! 🍰🎉";
+        $("cakeP").textContent = "Tap continue to go on";
+        confetti(160);
+        setTimeout(() => confetti(80), 700);
+      };
+      /* ---------- 5 quiz ---------- */
+      let qi = 0,
+        score = 0,
+        done = false;
+      function renderQ() {
+        const b = $("qbox"),
+          n = C.quiz.length;
+        $("qnext").hidden = true;
+        if (qi >= n) {
+          $("qprog").textContent = "Quiz complete!";
+          b.innerHTML = `<h2>Your Score</h2><div style="font-size:44px;font-weight:700;color:var(--p2);text-shadow:0 0 14px var(--p)">${score} / ${n}</div><p class="s" style="font-size:15px;margin-top:10px">${score === n ? "Perfect! You’re amazing 🏆" : score >= n / 2 ? "Great job, " + C.name + "! 🎉" : "Nice try, " + C.name + "! 💖"}</p>`;
+          const x = $("qnext");
+          x.textContent = "See Photos 📸";
+          x.hidden = false;
+          x.onclick = () => go(6);
+          confetti(200);
+          return;
+        }
+        const q = C.quiz[qi];
+        $("qprog").textContent = `Question ${qi + 1} of ${n}`;
+        b.innerHTML = `<p style="font-weight:600;font-size:14px;margin-bottom:8px">Q${qi + 1}. ${q.q}</p>`;
+        q.a.forEach((t, i) => {
+          const o = document.createElement("button");
+          o.className = "opt";
+          o.textContent = String.fromCharCode(65 + i) + ") " + t;
+          o.onclick = () => {
+            if (done) return;
+            done = true;
+            const ok = i === q.c;
+            ok && score++;
+            o.classList.add(ok ? "ok" : "no");
+            if (!ok) b.children[q.c + 1].classList.add("ok");
+            fb.textContent = ok ? T(C.right) : T(C.wrong);
+            ok && confetti(50);
+            const x = $("qnext");
+            x.textContent = qi === n - 1 ? "See Score 🏆" : "Next Question 👉";
+            x.hidden = false;
+            x.onclick = () => {
+              qi++;
+              done = false;
+              renderQ();
+            };
+          };
+          b.appendChild(o);
+        });
+        const fb = document.createElement("div");
+        fb.className = "fb";
+        b.appendChild(fb);
+      }
+      /* ---------- 6 gallery ---------- */
+      let pi = 0;
+      function ph(i) {
+        const h = [330, 300, 350, 320, 340, 310, 0, 20, 280, 290][i % 10];
+        return (
+          "data:image/svg+xml;utf8," +
+          encodeURIComponent(
+            `<svg xmlns='http://www.w3.org/2000/svg' width='600' height='800'><defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'><stop offset='0' stop-color='hsl(${h},80%,45%)'/><stop offset='1' stop-color='hsl(${h + 40},70%,15%)'/></linearGradient></defs><rect width='600' height='800' fill='url(#g)'/><text x='300' y='410' font-size='150' text-anchor='middle' fill='white' opacity='.85'>♥</text><text x='300' y='520' font-size='40' text-anchor='middle' fill='white' font-family='sans-serif'>Photo ${i + 1}</text></svg>`,
+          )
+        );
+      }
+      function showPhoto(i) {
+        const n = C.photos.length;
+        pi = (i + n) % n;
+        const p = C.photos[pi],
+          im = $("gimg");
+        im.style.opacity = 0;
+        im.style.transform = "scale(.96)";
+        setTimeout(() => {
+          im.src = p.src || ph(pi);
+          im.style.opacity = 1;
+          im.style.transform = "none";
+        }, 180);
+        $("cap").innerHTML = "";
+        $("cap").append(p.cap);
+        const s = document.createElement("small");
+        s.textContent = p.date;
+        $("cap").appendChild(s);
+        $("cnt").textContent = `${pi + 1} / ${n}`;
+      }
+      $("prev").onclick = () => showPhoto(pi - 1);
+      $("next").onclick = () => showPhoto(pi + 1);
+      let sx = 0;
+      const fr = $("frame");
+      fr.addEventListener("touchstart", (e) => (sx = e.touches[0].clientX), {
+        passive: true,
+      });
+      fr.addEventListener("touchend", (e) => {
+        const d = e.changedTouches[0].clientX - sx;
+        if (Math.abs(d) > 40) showPhoto(pi + (d < 0 ? 1 : -1));
+      });
+      let mx = null;
+      fr.addEventListener("mousedown", (e) => {
+        mx = e.clientX;
+        e.preventDefault();
+      });
+      addEventListener("mouseup", (e) => {
+        if (mx !== null && Math.abs(e.clientX - mx) > 40)
+          showPhoto(pi + (e.clientX < mx ? 1 : -1));
+        mx = null;
+      });
+      addEventListener("keydown", (e) => {
+        if (cur === 6) {
+          if (e.key === "ArrowRight") showPhoto(pi + 1);
+          if (e.key === "ArrowLeft") showPhoto(pi - 1);
+        }
+      });
+      /* ---------- 7 final ---------- */
+      function final() {
+        $("fin").textContent = "🎉 Happy Birthday " + C.name + "! ❤️";
+        $("fmsg").textContent = T(C.final);
+        confetti(220);
+        const f = () =>
+          burst(
+            W * (0.15 + Math.random() * 0.7),
+            H * (0.1 + Math.random() * 0.4),
+            70,
+          );
+        f();
+        fwT = setInterval(f, 800);
+      }
+      $("replay").onclick = () => {
+        qi = 0;
+        score = 0;
+        done = false;
+        $("cakeSvg").classList.remove("cut");
+        $("cutBtn").hidden = false;
+        $("cakeNext").hidden = true;
+        $("cakeH").textContent = "Candles Blown Out! 🕯️✨";
+        $("cakeP").textContent = "Now tap to cut your birthday cake!";
+        $("pw").value = "";
+        balloons();
+        go(0);
+        setTimeout(() => $("pw").focus(), 300);
+      };
+      balloons();
+      letter();
+    </script>
+  </body>
+</html>
